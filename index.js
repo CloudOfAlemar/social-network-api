@@ -1,6 +1,6 @@
 const express = require("express");
 const db = require("./config/connection");
-require("./models/");
+const routes = require("./routes");
 
 const cwd = process.cwd();
 const wd = cwd.split("/");
@@ -12,6 +12,7 @@ const directory = cwd.includes("social-network-api") ? wd[wd.length - 1] : cwd;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(routes);
 
 db.once("open", () => {
   app.listen(PORT, () => {
