@@ -1,6 +1,6 @@
 const express = require("express");
 const db = require("./config/connection");
-const User = require("./models/User");
+require("./models/");
 
 const cwd = process.cwd();
 const wd = cwd.split("/");
