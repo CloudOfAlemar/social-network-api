@@ -25,4 +25,16 @@ module.exports = {
       res.status(500).json({ message: error });
     }
   },
+  async updateUser(req, res) {
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true, runValidators: true }
+      );
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      res.status(500).json({ message: error });
+    }
+  },
 };
