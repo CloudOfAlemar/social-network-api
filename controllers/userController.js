@@ -37,4 +37,12 @@ module.exports = {
       res.status(500).json({ message: error });
     }
   },
+  async deleteUser(req, res) {
+    try {
+      const deletedUser = await User.findByIdAndDelete(req.params.id);
+      res.status(200).json(deletedUser);
+    } catch (error) {
+      res.status(500).json({ message: error });
+    }
+  },
 };
