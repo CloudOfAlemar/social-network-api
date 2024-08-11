@@ -1,7 +1,13 @@
+/*
+  Require modules
+*/
 const { User, Thought } = require("../models");
 const connection = require("../config/connection");
 
 connection.once("open", async () => {
+  /*
+  Create initial Users and initial Thoughts to seed data into database
+*/
   const initialUsers = [
     {
       username: "alemar",
@@ -46,6 +52,9 @@ connection.once("open", async () => {
     },
   ];
 
+  /*
+  Reset data and fill again when seed.js is run
+*/
   await User.deleteMany({});
 
   const insertedUsers = await User.insertMany(initialUsers);
@@ -54,6 +63,9 @@ connection.once("open", async () => {
 
   const insertedThoughts = await Thought.insertMany(initialThoughts);
 
+  /*
+  Insert thoughts into a user
+*/
   const userOneThoughts = insertedThoughts
     .filter((thought) => thought.username === "alemar")
     .map((thought) => thought._id);

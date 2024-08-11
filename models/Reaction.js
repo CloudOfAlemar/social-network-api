@@ -1,5 +1,11 @@
+/*
+  Require modules
+*/
 const { Schema, Types } = require("mongoose");
 
+/*
+  Create a reaction schema with according fields
+*/
 const reactionSchema = new Schema(
   {
     reactionId: {
