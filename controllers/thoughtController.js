@@ -40,4 +40,17 @@ module.exports = {
       res.status(500).json({ message: error });
     }
   },
+  async deleteThought(req, res) {
+    try {
+      const thought = await Thought.findByIdAndDelete(req.params.id);
+      const user = await User.findOneAndUpdate(
+        { username: thought.username },
+        { $pull: { thoughts: thought._id } },
+        { new: true }
+      );
+      res.status(200).json(thought);
+    } catch (error) {
+      res.status(500).json({ message: error });
+    }
+  },
 };
