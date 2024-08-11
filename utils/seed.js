@@ -54,5 +54,15 @@ connection.once("open", async () => {
 
   const insertedThoughts = await Thought.insertMany(initialThoughts);
 
+  const userOneThoughts = insertedThoughts
+    .filter((thought) => thought.username === "alemar")
+    .map((thought) => thought._id);
+
+  const userOne = await User.findByIdAndUpdate(
+    insertedUsers[0]._id,
+    { $addToSet: { thoughts: { $each: userOneThoughts } } },
+    { new: true }
+  );
+
   process.exit(0);
 });

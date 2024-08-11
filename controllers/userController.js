@@ -11,7 +11,9 @@ module.exports = {
   },
   async getSingleUser(req, res) {
     try {
-      const user = await User.findById(req.params.id);
+      const user = await User.findById(req.params.id)
+        .populate("thoughts")
+        .populate("friends");
       res.status(200).json(user);
     } catch (error) {
       res.status(500).json({ message: error });
@@ -40,7 +42,20 @@ module.exports = {
   async deleteUser(req, res) {
     try {
       const deletedUser = await User.findByIdAndDelete(req.params.id);
+      await Thought.deleteMany({ _id: { $in: deletedUser.thoughts } });
       res.status(200).json(deletedUser);
+    } catch (error) {
+      res.status(500).json({ message: error });
+    }
+  },
+  async addFriend(req, res) {
+    try {
+      const user = await User.findByIdAndUpdate(
+        req.params.userId,
+        { $addToSet: { friends: req.params.friendId } },
+        { new: true }
+      ).populate("friends");
+      res.status(200).json(user);
     } catch (error) {
       res.status(500).json({ message: error });
     }
