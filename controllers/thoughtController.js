@@ -9,4 +9,12 @@ module.exports = {
       res.status(500).json({ message: error });
     }
   },
+  async getSingleThought(req, res) {
+    try {
+      const thought = await Thought.findById(req.params.id);
+      res.status(200).json(thought);
+    } catch (error) {
+      res.status(500).json({ message: error });
+    }
+  },
 };
