@@ -17,4 +17,17 @@ module.exports = {
       res.status(500).json({ message: error });
     }
   },
+  async createThought(req, res) {
+    try {
+      const thought = await Thought.create(req.body);
+      const user = await User.findByIdAndUpdate(
+        req.body.userId,
+        { $addToSet: { thoughts: thought._id } },
+        { new: true }
+      );
+      res.status(200).json(thought);
+    } catch (error) {
+      res.status(500).json({ message: error });
+    }
+  },
 };
