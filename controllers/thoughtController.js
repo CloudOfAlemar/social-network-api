@@ -11,7 +11,7 @@ module.exports = {
   },
   async getSingleThought(req, res) {
     try {
-      const thought = await Thought.findById(req.params.id);
+      const thought = await Thought.findById(req.params.thoughtId);
       res.status(200).json(thought);
     } catch (error) {
       res.status(500).json({ message: error });
@@ -32,9 +32,13 @@ module.exports = {
   },
   async updateThought(req, res) {
     try {
-      const thought = await Thought.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-      });
+      const thought = await Thought.findByIdAndUpdate(
+        req.params.thoughtId,
+        req.body,
+        {
+          new: true,
+        }
+      );
       res.status(200).json(thought);
     } catch (error) {
       res.status(500).json({ message: error });
@@ -42,10 +46,22 @@ module.exports = {
   },
   async deleteThought(req, res) {
     try {
-      const thought = await Thought.findByIdAndDelete(req.params.id);
+      const thought = await Thought.findByIdAndDelete(req.params.thoughtId);
       const user = await User.findOneAndUpdate(
         { username: thought.username },
         { $pull: { thoughts: thought._id } },
+        { new: true }
+      );
+      res.status(200).json(thought);
+    } catch (error) {
+      res.status(500).json({ message: error });
+    }
+  },
+  async createReaction(req, res) {
+    try {
+      const thought = await Thought.findByIdAndUpdate(
+        req.params.thoughtId,
+        { $addToSet: { reactions: req.body } },
         { new: true }
       );
       res.status(200).json(thought);
