@@ -30,4 +30,14 @@ module.exports = {
       res.status(500).json({ message: error });
     }
   },
+  async updateThought(req, res) {
+    try {
+      const thought = await Thought.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+      });
+      res.status(200).json(thought);
+    } catch (error) {
+      res.status(500).json({ message: error });
+    }
+  },
 };
