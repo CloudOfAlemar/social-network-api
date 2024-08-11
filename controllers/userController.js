@@ -60,4 +60,16 @@ module.exports = {
       res.status(500).json({ message: error });
     }
   },
+  async deleteFriend(req, res) {
+    try {
+      const user = await User.findByIdAndUpdate(
+        req.params.userId,
+        { $pull: { friends: req.params.friendId } },
+        { new: true }
+      );
+      res.status(200).json(user);
+    } catch (error) {
+      res.status(500).json({ message: error });
+    }
+  },
 };
